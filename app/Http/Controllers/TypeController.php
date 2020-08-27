@@ -14,7 +14,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $list = DB::table('types')->paginate(10);
+        return view('types.index')->with('list', $list);
     }
 
     /**
@@ -35,7 +36,18 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            //dd($request->input());
+            $type = new Type();
+            $type->name = $request->name;
+            $type->observation = $request->observation;
+            $type->save();
+    
+            Session::flash('success', 'Bien enregister');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas ajouter cette objet');
+            }
+            return redirect()->route('types.index');
     }
 
     /**
@@ -67,9 +79,18 @@ class TypeController extends Controller
      * @param  \App\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(Request $request)
     {
-        //
+        try{
+            $type = Type::find($request->id);
+            $type->name = $request->name;
+            $type->observation = $request->observation;
+            $type->save();
+            Session::flash('success', 'Bien modifier');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas modifier cette objet');
+            }
+            return back();
     }
 
     /**
@@ -80,6 +101,13 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        try{
+            $type = Type::find($id);
+            $type->delete();
+            Session::flash('success', 'Bien supprimer');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas supprimer cette objet');
+            }
+            return redirect()->route('types.index');
     }
 }

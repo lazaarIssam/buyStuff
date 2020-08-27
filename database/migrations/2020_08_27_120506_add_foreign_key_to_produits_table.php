@@ -14,8 +14,8 @@ class AddForeignKeyToProduitsTable extends Migration
     public function up()
     {
         Schema::table('produits', function (Blueprint $table) {
-            $table->bigInteger('restaurant_id')->unsigned()->after('id');
-            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
+            $table->bigInteger('user_id')->unsigned()->after('id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             //-------------
             $table->bigInteger('typeproduit_id')->unsigned()->after('id');
             $table->foreign('typeproduit_id')->references('id')->on('typeproduits')->onDelete('cascade');
@@ -30,8 +30,8 @@ class AddForeignKeyToProduitsTable extends Migration
     public function down()
     {
         Schema::table('produits', function (Blueprint $table) {
-            $table->dropForeign(['restaurant_id']);
-            $table->dropColumn('restaurant_id');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
             //----------------
             $table->dropForeign(['typeproduit_id']);
             $table->dropColumn('typeproduit_id');

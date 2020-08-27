@@ -19,10 +19,8 @@ class CreateRestaurantsTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('addresse');
-            $table->string('gerant');
             $table->string('telephonque');
             $table->string('description');
-            $table->string('passwod');
             $table->rememberToken();
             $table->timestamps();
         });

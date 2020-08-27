@@ -15,8 +15,8 @@ class AddForeignKeyToCommandesTable extends Migration
     {
         Schema::table('commandes', function (Blueprint $table) {
             //
-            $table->bigInteger('client_id')->unsigned()->after('id');
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->bigInteger('user_id')->unsigned()->after('id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -28,8 +28,8 @@ class AddForeignKeyToCommandesTable extends Migration
     public function down()
     {
         Schema::table('commandes', function (Blueprint $table) {
-            $table->dropForeign(['client_id']);
-            $table->dropColumn('client_id');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 }

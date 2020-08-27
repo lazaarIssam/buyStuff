@@ -14,7 +14,8 @@ class TypeproduitController extends Controller
      */
     public function index()
     {
-        //
+        $list = DB::table('typeproduits')->paginate(10);
+        return view('typeproduits.index')->with('list', $list);
     }
 
     /**
@@ -35,7 +36,18 @@ class TypeproduitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            //dd($request->input());
+            $typeproduit = new Typeproduit();
+            $typeproduit->name = $request->name;
+            $typeproduit->observation = $request->observation;
+            $typeproduit->save();
+    
+            Session::flash('success', 'Bien enregister');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas ajouter cette objet');
+            }
+            return redirect()->route('typeproduits.index');
     }
 
     /**
@@ -67,9 +79,18 @@ class TypeproduitController extends Controller
      * @param  \App\Typeproduit  $typeproduit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Typeproduit $typeproduit)
+    public function update(Request $request)
     {
-        //
+        try{
+            $typeproduit = Typeproduit::find($request->id);
+            $typeproduit->name = $request->name;
+            $typeproduit->observation = $request->observation;
+            $typeproduit->save();
+            Session::flash('success', 'Bien modifier');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas modifier cette objet');
+            }
+            return back();
     }
 
     /**
@@ -80,6 +101,13 @@ class TypeproduitController extends Controller
      */
     public function destroy(Typeproduit $typeproduit)
     {
-        //
+        try{
+            $typeproduit = Typeproduit::find($id);
+            $typeproduit->delete();
+            Session::flash('success', 'Bien supprimer');
+            }catch(Throwable $e){
+                Session::flash('failed', 'Vous ne pouvez pas supprimer cette objet');
+            }
+            return redirect()->route('typeproduits.index');
     }
 }
